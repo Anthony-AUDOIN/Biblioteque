@@ -1,11 +1,7 @@
 #include "biblio.h"
 #include <iostream>
 #include <string>
-#include <Windows.h>
-#include <conio.h>
 using namespace std;
-static int __BACKGROUND;
-static int __FOREGROUND;
 
 
 void menu(int minchoix, int maxchoix, string menu, int& choix) {
@@ -17,15 +13,18 @@ void menu(int minchoix, int maxchoix, string menu, int& choix) {
 
 void affichelivre(t_livre monlivre, t_auteur monauteur)
 {
-	cout << "############################################" << endl;
-	cout << "titre : " << monlivre.titre	<< endl;
-	cout << "auteur : " << monauteur.nom << " "<< monauteur.prenom << " (" << monauteur.datedenaissance.jj <<"/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << ")" << endl;
-	cout << "style : " << monlivre.style << endl;
-	cout << "date de parrution : " << monlivre.datedeparution.jj << "/" << monlivre.datedeparution.mm << "/" << monlivre.datedeparution.aa << endl;
-	cout << "nombre de pages : " << monlivre.pages << endl;
-	cout << "#############################################" << endl;
+	cout << "+------------------------------------------------------------+" << endl;
+	cout << "|titre : " << monlivre.titre << "                            |" << endl;
+	cout << "+------------------------------------------------------------+" << endl;
+	cout << "|auteur : " << monauteur.nom << " "<< monauteur.prenom << " (" << monauteur.datedenaissance.jj <<"/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << ")" << endl;
+	cout << "+------------------------------------------------------------+" << endl;
+	cout << "|style : " << monlivre.style << endl;
+	cout << "+------------------------------------------------------------+" << endl;
+	cout << "|date de parrution : " << monlivre.datedeparution.jj << "/" << monlivre.datedeparution.mm << "/" << monlivre.datedeparution.aa << endl;
+	cout << "+------------------------------------------------------------+" << endl;
+	cout << "|nombre de pages : " << monlivre.pages << "|" << endl;
+	cout << "+------------------------------------------------------------+" << endl;
 }
-
 void vousaimerezaussi(t_biblio mabib, t_livre monlivre) {
 	int y;
 	//string stylelivre;
@@ -39,12 +38,16 @@ void vousaimerezaussi(t_biblio mabib, t_livre monlivre) {
 }
 
 void affichelivres(t_biblio mabib) {
-
-	for (int i = 0; i < mabib.nbelem; i++) {
-		affichelivre(mabib.listelivres[i],mabib.listeauteurs[i]);
-		
+	if (mabib.nbelem != 0)
+	{
+		for (int i = 0; i < mabib.nbelem; i++) {
+			affichelivre(mabib.listelivres[i], mabib.listeauteurs[i]);
+		}
 	}
-	
+	else
+	{
+		cout << "Il y a aucun livre dans la biblioteque";
+	}
 	
 }
 
@@ -143,7 +146,7 @@ void recherche(t_biblio mabib) {
 		break;
 	case 3: break;
 	}
-	vousaimerezaussi(mabib, mabib.listelivres[i]);
+	//vousaimerezaussi(mabib, mabib.listelivres[i]);
 }
 
 void supprlivre(t_biblio& mabib) {
@@ -167,52 +170,4 @@ void emprunterlivre(t_biblio& mabib) {
 
 	cout << "voulez vous emprunter ce livre ?";
 	//cin >> .etat;
-}
-
-void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
-{
-        HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
-}
-
-void textbackground (int color)
-{
-__BACKGROUND = color;
-SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),
-__FOREGROUND + (color << 4));
-}
-// ----------------------------------------
-
-void locate(int x,int y)
-{
-    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD C;
-    C.X=(SHORT)x;
-    C.Y=(SHORT)y;
-    SetConsoleCursorPosition(H,C);
-}
-
-// ---------------------------------------
-
-typedef struct sprite
-{
-    int x,y;
-    int xprev,yprev;
-    int status;
-} Sprite;
-
-// ----------------------------------------
-
-void controle(int touche, Sprite* v, Sprite)
-{
-	if (v->status == 0)
-		return;
-	if (touche == 273 && v->x > 0);
-	v->x--;
-	if (touche == 273 && v->x < 70);
-	v->x++;
-	if (touche == 273 && v->y > 0);
-	v->y--;
-	if (touche == 273 && v->y < 40);
-	v->y++;
 }
