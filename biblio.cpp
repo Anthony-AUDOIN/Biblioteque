@@ -97,43 +97,57 @@ void ajoutelivre(t_biblio& mabib, t_auteur& monauteur) {
 }
 
 int recherchelivre(t_biblio mabib) {
-	int pos = 0;
-	string titrerecher;
-	cout << "Entrer le titre du livre que vous rechercher : ";
-	cin.ignore();
-	getline(cin, titrerecher);
-	bool trouve;
-	trouve = false;
-	while (trouve == false && mabib.nbelem > pos) {
-		if (mabib.listelivres[pos].titre == titrerecher)
-		{
-			trouve = true;
-			affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
+	if (mabib.nbelem != 0)
+	{
+		int pos = 0;
+		string titrerecher;
+		cout << "Entrer le titre du livre que vous rechercher : ";
+		cin.ignore();
+		getline(cin, titrerecher);
+		bool trouve;
+		trouve = false;
+		while (trouve == false && mabib.nbelem > pos) {
+			if (mabib.listelivres[pos].titre == titrerecher)
+			{
+				trouve = true;
+				affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
 
-		}
+			}
 			pos++;
+		}
+		return pos;
 	}
-	return pos;
+	else
+	{
+		cout << "Il y a aucun livre dans la biblioteque " << endl;
+	}
 }
 
 int rechercheauteur(t_biblio mabib) {
-	int pos = 0;
-	string auteurrecherch;
-	cout << "Entrer le titre du livre que vous rechercher : ";
-	cin.ignore();
-	getline(cin, auteurrecherch);
-	bool trouve;
-	trouve = false;
-	while (trouve == false && mabib.nbauteur > pos) {
-		if (mabib.listeauteurs[pos].nom == auteurrecherch)
-		{
-			trouve = true;
-			affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
+	if (mabib.nbelem != 0)
+	{
+		int pos = 0;
+		string auteurrecherch;
+		cout << "Entrer le titre du livre que vous rechercher : ";
+		cin.ignore();
+		getline(cin, auteurrecherch);
+		bool trouve;
+		trouve = false;
+		while (trouve == false && mabib.nbauteur > pos) {
+			if (mabib.listeauteurs[pos].nom == auteurrecherch)
+			{
+				trouve = true;
+				affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
 
+			}
+			pos++;
 		}
-		pos++;
+		return pos;
+	} 
+	else
+	{
+		cout << "Il y a aucun livre dans la biblioteque " << endl;
 	}
-	return pos;
 }
 	
 void recherche(t_biblio mabib) {
@@ -147,6 +161,11 @@ void recherche(t_biblio mabib) {
 	case 3: break;
 	}
 	//vousaimerezaussi(mabib, mabib.listelivres[i]);
+}
+
+void sauvegarde(t_biblio& mabib)
+{
+
 }
 
 void supprlivre(t_biblio& mabib) {
@@ -171,3 +190,4 @@ void emprunterlivre(t_biblio& mabib) {
 	cout << "voulez vous emprunter ce livre ?";
 	//cin >> .etat;
 }
+

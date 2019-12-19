@@ -4,9 +4,6 @@
 using namespace std;
 
 int main() { 
-	cout << "			BIBLIOTHEQUE" << endl;
-	cout << "#################################################################" << endl;
-	cout << "			  ACCUEIL" << endl;
 	//system("color 70");
 	t_auteur monauteur;
 	t_biblio mabib;
@@ -14,7 +11,7 @@ int main() {
 	mabib.nbauteur = 0;
 	int choix;
 	do {
-		menu(1, 5, "1 : Afficher l'ensemble des livres de la bibilotheque\n2 : Ajouter un livre\n3 : Supprimer un livre\n4 : Recherche\n5 : Quitter", choix);
+		menu(1, 5, "			BIBLIOTHEQUE\n#################################################################\n			  ACCUEIL\n1 : Afficher l'ensemble des livres de la bibilotheque\n2 : Ajouter un livre\n3 : Supprimer un livre\n4 : Recherche\n5 : Quitter", choix);
 		switch (choix) {
 		case 1: affichelivres(mabib);
 			cout << endl;

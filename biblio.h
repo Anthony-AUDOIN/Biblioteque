@@ -18,6 +18,7 @@ struct t_auteur {
 	string nom;
 	string prenom;
 	t_date datedenaissance;
+	string nationalite;
 };
 
 struct t_livre {
@@ -26,13 +27,9 @@ struct t_livre {
 	string style;
 	int pages;
 	t_date datedeparution;
+	string editeurlivre;
 	string etat;
 };
-
-
-//type auteur = nom, annee, naiss, nationalite
-//initialiser et desintialiser la biblio
-// procedure affiche auteur
 
 struct t_biblio {
 	int nbauteur;
@@ -40,6 +37,13 @@ struct t_biblio {
 	t_livre listelivres[maxlivres];
 	t_auteur listeauteurs[maxlivres];
 };
+
+//type auteur = nom, annee, naiss, nationalite
+//initialiser et desintialiser la biblio
+// procedure affiche auteur
+
+//////////////////////////////////////////////////////////////////
+
 
 void menu(int minchoix, int maxchoix, string menu, int& choix);
 void affichelivre(t_livre monlivre, t_auteur monauteur);
@@ -49,7 +53,6 @@ void ajoutelivre(t_biblio& mabib, t_auteur& monauteur);
 int recherchelivre(t_biblio mabib);
 void supprlivre(t_biblio& mabib);
 void recherche(t_biblio mabib);
-void Color(int couleurDuTexte, int couleurDeFond); // fonction d'affichage de couleurs
-void textbackground (int color);
+void sauvegarde(t_biblio & mabib);
 //void vousaimerezaussi(t_biblio, int i);
 #endif 
