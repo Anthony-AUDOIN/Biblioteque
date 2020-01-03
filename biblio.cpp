@@ -3,56 +3,31 @@
 #include <string>
 using namespace std;
 
-
-int nbnote;
 void menu(int minchoix, int maxchoix, string menu, int& choix) {
 	cout << menu << endl;
 	cout << "Choix : ";
 	cin >> choix;
 }
 
-int calculmoyennenotes(int nbnote, t_livre monlivre) {
-	int somme = 0;
-	float moyenne;
-	for (int i = 0; i < nbnote;i++) {
-		somme = somme + monlivre.note[i];
-	}
-	moyenne = float(somme) / float(nbnote);
-	return moyenne;
-}
-
 void afficheauteur(t_auteur monauteur) {
 	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|auteur : " << monauteur.nom << " " << monauteur.prenom << " (" << monauteur.datedenaissance.jj << "/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << ")" << endl;
+	cout << "|auteur : " << monauteur.nom << " " << monauteur.prenom << " (" << monauteur.datedenaissance.jj << "/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << ")  " <<monauteur.nationalite<< endl;
 	cout << "+------------------------------------------------------------+" << endl;
 }
 
-void affichelivre(t_livre monlivre, int nbnote)
+void affichelivre(t_livre monlivre)
 {
-	int note;
-	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|titre : " << monlivre.titre << endl;
-	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|style : " << monlivre.style << endl;
-	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|date de parrution : " << monlivre.datedeparution.jj << "/" << monlivre.datedeparution.mm << "/" << monlivre.datedeparution.aa << endl;
-	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|nombre de pages : " << monlivre.pages << endl;
-	cout << "+------------------------------------------------------------+" << endl;
-	note = calculmoyennenotes(nbnote, monlivre);
-	cout << "|note : " << note << endl;
-	cout << "+------------------------------------------------------------+" << endl;
-	cout << "|etat : " << monlivre.etat << endl;
-	cout << "+------------------------------------------------------------+" << endl;
+	cout << "+------------------------------------------------------------------------------------+" << endl;
+	cout << " TITRE : " << monlivre.titre << " | STYLE : "<< monlivre.style << " | DATE DE PARUTION : " << monlivre.datedeparution.jj << "/" << monlivre.datedeparution.mm << "/" << monlivre.datedeparution.aa  << " | NOMBRE DE PAGES: " << monlivre.pages << " | NOTE : " << monlivre.moynotes  << " | ETAT : " << monlivre.etat << endl;
+	cout << "+------------------------------------------------------------------------------------+" << endl;
 }
 
 void affichelivres(t_biblio mabib) {
 
 	if (mabib.nbelem != 0) {
 		for (int i = 0; i < mabib.nbelem; i++) {
-			cout << "############################" << endl;
-			affichelivre(mabib.listelivres[i],nbnote);
-			cout << "############################" << endl;
+			affichelivre(mabib.listelivres[i]);
+			cout << "######################################################" << endl;
 		}
 	}
 	else {
@@ -70,12 +45,10 @@ void ajouteauteur(t_biblio& mabib, string nom) {
 		mabib.listeauteurs[mabib.nbauteur].nom=nom;
 		cout << "Entrer le prenom de l'auteur : ";
 		cin >> mabib.listeauteurs[mabib.nbauteur].prenom;
-		cout << "Entrer le jour de naissance de l'auteur : ";
-		cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj;
-		cout << "Entrer le mois de naissance de l'auteur : ";
-		cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.mm;
-		cout << "Entrer l'annee de naissance de l'auteur : ";
-		cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.aa;
+		cout << "Entrer le jour, le mois, et l'annee de naissance de l'auteur : ";
+		cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj>> mabib.listeauteurs[mabib.nbauteur].datedenaissance.mm>> mabib.listeauteurs[mabib.nbauteur].datedenaissance.aa;
+		cout << "Entrer la nationalite de l'auteur : ";
+		cin >> mabib.listeauteurs[mabib.nbauteur].nationalite;
 	}
 	mabib.nbauteur = mabib.nbauteur + 1;
 }
@@ -112,7 +85,7 @@ int rechercheauteur(t_biblio mabib, string nom) {
 	}
 }
 
-void ajoutelivre(t_biblio& mabib, string titre, int nbnote) {
+void ajoutelivre(t_biblio& mabib, string titre) {
 	string doexist = "non";
 	if (maxlivres == mabib.nbelem) {
 		cout << "Impossible d'ajouter ce livre, la bibliotheque est pleine.";
@@ -133,16 +106,12 @@ void ajoutelivre(t_biblio& mabib, string titre, int nbnote) {
 			//l'id de l'auteur
 			cout << "Entrer le style du livre (horreur, romantique, comédie, scientifique, biographique) : ";
 			cin >> mabib.listelivres[mabib.nbelem].style;
-			cout << "Entrer la jour de parution : ";
-			cin >> mabib.listelivres[mabib.nbelem].datedeparution.jj;
-			cout << "Entrer la mois de parution : ";
-			cin >> mabib.listelivres[mabib.nbelem].datedeparution.mm;
-			cout << "Entrer l annee de parution : ";
-			cin >> mabib.listelivres[mabib.nbelem].datedeparution.aa;
+			cout << "Entrer la jour, le mois, et l'annee de parution : ";
+			cin >> mabib.listelivres[mabib.nbelem].datedeparution.jj >> mabib.listelivres[mabib.nbelem].datedeparution.mm >> mabib.listelivres[mabib.nbelem].datedeparution.aa;
 			cout << "Entrer le nombre de pages : ";
 			cin >> mabib.listelivres[mabib.nbelem].pages;
 			mabib.listelivres[mabib.nbelem].etat = "disponible";
-			mabib.listelivres[mabib.nbelem].note[nbnote] = 0;
+			mabib.listelivres[mabib.nbelem].moynotes = 0;
 
 			string nom;
 			cout << endl << "Entrer le nom de l'auteur : ";
@@ -166,36 +135,9 @@ void ajoutelivre(t_biblio& mabib, string titre, int nbnote) {
 	}
 }
 
-<<<<<<< HEAD
-int recherchelivre(t_biblio mabib) {
-	if (mabib.nbelem != 0)
-	{
-		int pos = 0;
-		string titrerecher;
-		cout << "Entrer le titre du livre que vous rechercher : ";
-		cin.ignore();
-		getline(cin, titrerecher);
-		bool trouve;
-		trouve = false;
-		while (trouve == false && mabib.nbelem > pos) {
-			if (mabib.listelivres[pos].titre == titrerecher)
-			{
-				trouve = true;
-				affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
-
-			}
-			pos++;
-		}
-		return pos;
-	}
-	else
-	{
-		cout << "Il y a aucun livre dans la biblioteque " << endl;
-=======
 void afficheauteurs(t_biblio mabib) {
 	if (mabib.nbelem != 0) {
 		for (int i = 0; i < mabib.nbauteur; i++) {
-			cout << "############################" << endl;
 			afficheauteur(mabib.listeauteurs[i]);
 			cout << "############################" << endl;
 		}
@@ -221,36 +163,10 @@ int recherchelivre(t_biblio mabib, string titre) {
 	}
 	if (trouve == false) {
 		cout << "Aucun resultat" << endl;
->>>>>>> c73b6e66b450e006a5a86043cfbdcb9203db8dc1
 	}
+	return pos;
 }
 
-<<<<<<< HEAD
-int rechercheauteur(t_biblio mabib) {
-	if (mabib.nbelem != 0)
-	{
-		int pos = 0;
-		string auteurrecherch;
-		cout << "Entrer le titre du livre que vous rechercher : ";
-		cin.ignore();
-		getline(cin, auteurrecherch);
-		bool trouve;
-		trouve = false;
-		while (trouve == false && mabib.nbauteur > pos) {
-			if (mabib.listeauteurs[pos].nom == auteurrecherch)
-			{
-				trouve = true;
-				affichelivre(mabib.listelivres[pos], mabib.listeauteurs[pos]);
-
-			}
-			pos++;
-		}
-		return pos;
-	} 
-	else
-	{
-		cout << "Il y a aucun livre dans la biblioteque " << endl;
-=======
 void suggestion(t_biblio mabib, string titre) {
 	int i, y;
 	cout << endl << "Ces livres pourraient vous interesser : " << endl;
@@ -258,11 +174,10 @@ void suggestion(t_biblio mabib, string titre) {
 		if (mabib.listelivres[i].titre==titre) {
 			for (y = 0; y < mabib.nbelem; y++) {
 				if (mabib.listelivres[i].style == mabib.listelivres[y].style && i!=y) {
-					affichelivre(mabib.listelivres[y], nbnote);
+					affichelivre(mabib.listelivres[y]);
 				}
 			}
 		}
->>>>>>> c73b6e66b450e006a5a86043cfbdcb9203db8dc1
 	}
 }
 
@@ -280,7 +195,7 @@ void recherche(t_biblio mabib) {
 			cout << "Entrer le titre du livre du livre que vous recherchez : ";
 			cin.ignore();
 			getline(cin, titre);
-			affichelivre(mabib.listelivres[recherchelivre(mabib, titre)], nbnote);
+			affichelivre(mabib.listelivres[recherchelivre(mabib, titre)]);
 			suggestion(mabib, titre);
 			break;
 		case 2:
@@ -289,8 +204,8 @@ void recherche(t_biblio mabib) {
 			for (int i = 0; i < mabib.nbauteur ;i++) {
 				if (mabib.listeauteurs[i].nom == nom) {
 					for (int y = 0; y < mabib.nbelem; y++) {
-						if (mabib.listeauteurs[i].id == mabib.listeauteurs[y].id)
-							affichelivre(mabib.listelivres[y], nbnote);
+						if (mabib.listeauteurs[i].nom == mabib.listeauteurs[y].nom)
+							affichelivre(mabib.listelivres[y]);
 					}
 				}
 			}
@@ -299,11 +214,6 @@ void recherche(t_biblio mabib) {
 			system("cls");
 		}
 	}
-}
-
-void sauvegarde(t_biblio& mabib)
-{
-
 }
 
 void supprlivre(t_biblio& mabib) {
@@ -316,7 +226,7 @@ void supprlivre(t_biblio& mabib) {
 	else {
 		cout << "Entrer le titre du livre que vous souhaitez supprimer : ";
 		cin >> titre;
-		affichelivre(mabib.listelivres[position],nbnote);
+		affichelivre(mabib.listelivres[position]);
 		cout << "Supprimer ? (o/n) : ";
 		cin >> rep;
 		if (rep == 'o') {
@@ -329,12 +239,6 @@ void supprlivre(t_biblio& mabib) {
 
 void emprunterlivre(t_biblio& mabib) {
 
-<<<<<<< HEAD
-	cout << "voulez vous emprunter ce livre ?";
-	//cin >> .etat;
-}
-
-=======
 	string livre, rep;
 	string doexist = "non";
 	cout << "Entrer le nom du livre que vous voulez emprunter : ";
@@ -342,7 +246,7 @@ void emprunterlivre(t_biblio& mabib) {
 	for (int i = 0; i < mabib.nbelem; i++) {
 		if (livre == mabib.listelivres[i].titre) {
 			doexist = 'oui';
-			affichelivre(mabib.listelivres[i],nbnote);
+			affichelivre(mabib.listelivres[i]);
 			cout << "voulez vous emprunter " << mabib.listelivres[i].titre << " ? (o/n) : ";
 			cin >> rep;
 			if (rep == "o" && mabib.listelivres[i].etat == "disponible") {
@@ -387,7 +291,17 @@ void rendrelivre(t_biblio& mabib) {
 	system("pause");
 }
 
-void notelivre(t_biblio& mabib, int nbnote) {
+int calculmoyennenotes(int nbnote, t_livre& monlivre) {
+	int somme = 0;
+	float moyenne;
+	for (int i = 0; i < nbnote;i++) {
+		somme = somme + monlivre.note[i];
+	}
+	moyenne = float(somme) / float(nbnote);
+	return moyenne;
+}
+
+void notelivre(t_biblio& mabib, int& nbnote, t_livre& monlivre) {
 	string doexist = "non";
 	string livre;
 	cout << "Entrer le titre du livre que vous souhaitez noter : ";
@@ -397,7 +311,9 @@ void notelivre(t_biblio& mabib, int nbnote) {
 			doexist = "oui";
 			cout << "Avez-vous appreci\202 " << mabib.listelivres[i].titre << " ? Faites le nous savoir en lui attribuant un note entre 1 et 5 : ";
 			cin >> mabib.listelivres[i].note[nbnote];
+			nbnote++;
 			cout << endl << "Merci pour votre avis !" << endl;
+			mabib.listelivres[i].moynotes = calculmoyennenotes(nbnote, monlivre);
 		}
 	}
 	if (doexist == "non") {
@@ -409,4 +325,3 @@ void classementlivre(t_biblio mabib) {
 	//a faire des que la moyenne des notes est ok
 
 }
->>>>>>> c73b6e66b450e006a5a86043cfbdcb9203db8dc1
