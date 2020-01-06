@@ -15,8 +15,9 @@ struct t_date {
 };
 
 struct t_auteur {
-	int id;
+	//int id;
 	string nom;
+	bool mort;
 	string prenom;
 	string nationalite;
 	t_date datedenaissance;
@@ -43,6 +44,7 @@ struct t_biblio {
 	t_auteur listeauteurs[maxlivres];
 };
 
+
 void menu(int minchoix, int maxchoix, string menu, int& choix);
 void affichelivre(t_livre monlivre);
 void affichelivres(t_biblio mabib);
@@ -60,5 +62,6 @@ void notelivre(t_biblio& mabib, int& nbnote);
 void locate(int x, int y);
 //void suggestion(t_biblio, int i);
 //void sauvegarde(t_biblio& mabib);
+bool VerifDate(int jour, int mois, int annee, bool valide);
 
 #endif

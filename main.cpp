@@ -130,7 +130,7 @@ int main() {
 			ajouteauteur(mabib);
 			system("pause");
 			break;
-		case 9:		
+		case 9:
 			system("cls");
 			supprlivre(mabib);
 			system("pause");
@@ -157,7 +157,7 @@ int main() {
 		}
 		system("cls");
 	} while (CursorY != 13);
-	
+
 
 
 	return 0;

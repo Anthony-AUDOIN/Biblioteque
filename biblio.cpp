@@ -20,16 +20,24 @@ void affichelivre(t_livre monlivre)
 }
 
 void afficheauteur(t_auteur monauteur) {
-	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
-	cout << "|auteur : " << monauteur.nom << " " << monauteur.prenom << " (" << monauteur.datedenaissance.jj << "/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa <<"-"<< monauteur.datedemort.jj << "/" << monauteur.datedemort.mm << "/" << monauteur.datedemort.aa << ")  " <<monauteur.nationalite<< endl;
-	cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl << endl;
+	if(monauteur.mort == true) {
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|auteur : " << monauteur.nom << " " << monauteur.prenom << " (" << monauteur.datedenaissance.jj << "/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << "-" << monauteur.datedemort.jj << "/" << monauteur.datedemort.mm << "/" << monauteur.datedemort.aa << ")  " << monauteur.nationalite << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl << endl;
+
+	}
+	else {
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl;
+		cout << "|auteur : " << monauteur.nom << " " << monauteur.prenom << " (" << monauteur.datedenaissance.jj << "/" << monauteur.datedenaissance.mm << "/" << monauteur.datedenaissance.aa << ")  " << monauteur.nationalite << endl;
+		cout << "+---------------------------------------------------------------------------------------------------------------------+" << endl << endl;
+	}
 }
 
 void affichelivres(t_biblio mabib) {
 	cout << endl;
-	cout << "#######################################################################################################################" <<endl;
-	cout << "#############################################   TOUS NOS LIVRES   #####################################################" <<endl;
-	cout << "#######################################################################################################################" << endl << endl <<endl;
+	cout << "#######################################################################################################################" << endl;
+	cout << "#############################################   TOUS NOS LIVRES   #####################################################" << endl;
+	cout << "#######################################################################################################################" << endl << endl << endl;
 	if (mabib.nbelem != 0) {
 		for (int i = 0; i < mabib.nbelem; i++) {
 			affichelivre(mabib.listelivres[i]);
@@ -40,9 +48,58 @@ void affichelivres(t_biblio mabib) {
 	}
 }
 
+bool VerifDate(int jour, int mois, int annee)
+{	
+	bool valide;
+	int cas;
+	cas = 0;
+	if (mois == 2) cas = 3;
+	if (mois == 1 || mois == 3 || mois == 5 || mois == 7 || mois == 8 || mois == 10 || mois == 12)cas = 2;
+	if (mois == 4 || mois == 6 || mois == 9 || mois == 11) cas = 1;
+
+	switch (cas)
+	{
+	case 1: if (jour < 1 || jour >30)
+	{
+		valide = false;
+	}
+		  break;
+	case 2:if ((mois == 12) && (jour == 31)) {
+		jour = 1;
+		mois = 1;
+		annee = annee + 1;
+	}
+		  else {
+		valide = true;
+	}
+
+		  break;
+	case 3: if (annee % 4 == 0 && (annee % 100 != 0 || annee % 400 == 0) && jour <= 29)
+	{
+		valide = true;
+	}
+		  else
+	{
+		if (jour > 28)
+		{
+			valide = false;
+		}
+		else
+		{
+			valide = true;
+		}
+	}
+		  break;
+	default: valide = false;
+		break;
+	}
+	return valide;
+}
+
 void ajouteauteur(t_biblio& mabib) {
 	string nom, rep;
 	string doexist = "non";
+	bool correct;
 
 	cout << endl;
 	cout << "#######################################################################################################################" << endl;
@@ -63,21 +120,31 @@ void ajouteauteur(t_biblio& mabib) {
 			}
 		}
 		if (doexist == "non") {
-			mabib.listeauteurs[mabib.nbauteur].nom=nom;
+			mabib.listeauteurs[mabib.nbauteur].nom = nom;
 			cout << "Entrer le prenom de l'auteur : ";
 			cin >> mabib.listeauteurs[mabib.nbauteur].prenom;
-			cout << "Entrer le jour, le mois, et l'annee de naissance de l'auteur : ";
-			cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.mm >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.aa;
+			do {
+				cout << "Entrer le jour, le mois, et l'annee de naissance de l'auteur : ";
+				cin >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.mm >> mabib.listeauteurs[mabib.nbauteur].datedenaissance.aa;
+				correct = VerifDate(mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj, mabib.listeauteurs[mabib.nbauteur].datedenaissance.mm, mabib.listeauteurs[mabib.nbauteur].datedenaissance.aa);
+				if (correct == false) {
+					cout << "Veuillez entrer une date correcte" << endl;
+				}
+			} while (correct == false);
 			cout << "Votre auteur est-il/elle toujours en vie ? (o/n) : ";
 			cin >> rep;
 			if (rep == "n") {
 				cout << "Entrer la date de mort de l'auteur : ";
 				cin >> mabib.listeauteurs[mabib.nbauteur].datedemort.jj >> mabib.listeauteurs[mabib.nbauteur].datedemort.mm >> mabib.listeauteurs[mabib.nbauteur].datedemort.aa;
+				mabib.listeauteurs[mabib.nbauteur].mort = true;
+			}
+			else {
+				mabib.listeauteurs[mabib.nbauteur].mort = false;
 			}
 			cout << "Entrer la nationalite de l'auteur : ";
 			cin >> mabib.listeauteurs[mabib.nbauteur].nationalite;
 		}
-		
+
 	}
 	mabib.nbauteur = mabib.nbauteur + 1;
 }
@@ -86,7 +153,7 @@ void affichelivresauteur(t_biblio mabib) {
 	string nom;
 	cout << "Entrer le nom de l'auteur que vous recherchez : ";
 	cin >> nom;
-	for (int i = 0; i < mabib.nbauteur;i++) {
+	for (int i = 0; i < mabib.nbauteur; i++) {
 		if (mabib.listeauteurs[i].nom == nom) {
 			for (int y = 0; y < mabib.nbelem; y++) {
 				if (mabib.listeauteurs[i].nom == mabib.listeauteurs[y].nom)
@@ -100,7 +167,7 @@ void affichelivresauteur(t_biblio mabib) {
 
 int rechercheauteur(t_biblio mabib, string nom) {
 	int pos = 0;
-	bool trouve=false;
+	bool trouve = false;
 	while (trouve == false && mabib.nbauteur > pos) {
 		if (mabib.listeauteurs[pos].nom == nom)
 		{
@@ -123,6 +190,7 @@ int rechercheauteur(t_biblio mabib, string nom) {
 void ajoutelivre(t_biblio& mabib) {
 	string doexist = "non";
 	string titre;
+	bool correct;
 
 	cout << endl;
 	cout << "#######################################################################################################################" << endl;
@@ -141,16 +209,22 @@ void ajoutelivre(t_biblio& mabib) {
 		for (int i = 0; i < mabib.nbelem; i++) {
 			if (mabib.listelivres[i].titre == titre) {
 				doexist = "oui";
-				cout << "Ce livre existe deja dans la bibliotheque"<< endl;
+				cout << "Ce livre existe deja dans la bibliotheque" << endl;
 			}
 		}
-		if (doexist=="non"){
+		if (doexist == "non") {
 			mabib.listelivres[mabib.nbelem].titre = titre;
 			//l'id de l'auteur
 			cout << "Entrer le style litt\202raire du livre (aventure, romantique, scientifique, biographique, etc ...) : ";
 			cin >> mabib.listelivres[mabib.nbelem].style;
-			cout << "Entrer le jour, le mois, et l'annee de parution : ";
-			cin >> mabib.listelivres[mabib.nbelem].datedeparution.jj >> mabib.listelivres[mabib.nbelem].datedeparution.mm >> mabib.listelivres[mabib.nbelem].datedeparution.aa;
+			do {
+				cout << "Entrer le jour, le mois, et l'annee de parution : ";
+				cin >> mabib.listelivres[mabib.nbelem].datedeparution.jj >> mabib.listelivres[mabib.nbelem].datedeparution.mm >> mabib.listelivres[mabib.nbelem].datedeparution.aa;
+				correct = VerifDate(mabib.listelivres[mabib.nbelem].datedeparution.jj, mabib.listelivres[mabib.nbelem].datedeparution.mm, mabib.listelivres[mabib.nbelem].datedeparution.aa);
+				if (correct == false) {
+					cout << "Veuillez entrer une date correcte" << endl;
+				}
+			} while (correct == false);
 			cout << "Entrer le nombre de pages : ";
 			cin >> mabib.listelivres[mabib.nbelem].pages;
 			mabib.listelivres[mabib.nbelem].etat = "disponible";
@@ -167,7 +241,7 @@ void ajoutelivre(t_biblio& mabib) {
 			}
 			else
 			{
-				cout << "auteur trouve."<<endl;
+				cout << "auteur trouve." << endl;
 				mabib.listeauteurs[mabib.nbauteur].nom = mabib.listeauteurs[resrech].nom;
 				mabib.listeauteurs[mabib.nbauteur].prenom = mabib.listeauteurs[resrech].prenom;
 				mabib.listeauteurs[mabib.nbauteur].datedenaissance.jj = mabib.listeauteurs[resrech].datedenaissance.jj;
@@ -185,7 +259,7 @@ void afficheauteurs(t_biblio mabib) {
 	cout << "#############################################   TOUS NOS AUTEURS   ####################################################" << endl;
 	cout << "#######################################################################################################################" << endl << endl << endl;
 
-	if (mabib.nbelem != 0) {
+	if (mabib.nbauteur != 0) {
 		for (int i = 0; i < mabib.nbauteur; i++) {
 			afficheauteur(mabib.listeauteurs[i]);
 		}
@@ -195,10 +269,9 @@ void afficheauteurs(t_biblio mabib) {
 	}
 }
 
-
 int recherchelivre(t_biblio mabib, string titre) {
 	int pos = 0;
-	bool trouve=false;
+	bool trouve = false;
 	while (trouve == false && mabib.nbelem > pos) {
 		if (mabib.listelivres[pos].titre == titre)
 		{
@@ -217,7 +290,7 @@ int recherchelivre(t_biblio mabib, string titre) {
 
 void recherchestyle(t_biblio mabib, string style) {
 	bool trouve = false;
-	for (int i=0;i<mabib.nbelem;i++){
+	for (int i = 0; i < mabib.nbelem; i++) {
 		if (mabib.listelivres[i].style == style) {
 			affichelivre(mabib.listelivres[i]);
 		}
@@ -230,9 +303,9 @@ void recherchestyle(t_biblio mabib, string style) {
 void suggestion(t_biblio mabib, string titre) {
 	int i, y;
 	for (i = 0; i < mabib.nbelem; i++) {
-		if (mabib.listelivres[i].titre==titre) {
+		if (mabib.listelivres[i].titre == titre) {
 			for (y = 0; y < mabib.nbelem; y++) {
-				if (mabib.listelivres[i].style == mabib.listelivres[y].style && i!=y) {
+				if (mabib.listelivres[i].style == mabib.listelivres[y].style && i != y) {
 					cout << endl << "Ces livres pourraient vous interesser : " << endl;
 					affichelivre(mabib.listelivres[y]);
 				}
@@ -250,13 +323,13 @@ void recherche(t_biblio mabib) {
 	cout << "#######################################################################################################################" << endl << endl << endl;
 
 	if (mabib.nbelem == 0) {
-		cout << "Il n'y a aucun livre dans la biblioteque"<<endl;
+		cout << "Il n'y a aucun livre dans la biblioteque" << endl;
 	}
 	else {
 		int choix;
 		menu(0, 4, "1 : Recherche par titre du livre\n2 : Rechercher par nom de l'auteur\n3 : Recherche par genre\n4 : Quitter", choix);
 		switch (choix) {
-		case 1: 
+		case 1:
 			cout << "Entrer le titre du livre du livre que vous recherchez : ";
 			cin.ignore();
 			getline(cin, titre);
@@ -357,9 +430,9 @@ void rendrelivre(t_biblio& mabib) {
 	for (int i = 0; i < mabib.nbelem; i++) {
 		if (livre == mabib.listelivres[i].titre) {
 			doexist = "oui";
-			if (mabib.listelivres[i].etat == "emprunte") {
+			if (mabib.listelivres[i].etat == "emprunt\202") {
 				mabib.listelivres[i].etat = "disponible";
-				cout << "Vous avez rendu le livre : " << mabib.listelivres[i].titre;
+				cout << "Vous avez rendu le livre : " << mabib.listelivres[i].titre << endl;
 			}
 			else {
 				if (mabib.listelivres[i].etat != "emprunte") {
@@ -393,12 +466,12 @@ void notelivre(t_biblio& mabib, int& nbnote) {
 			cin >> mabib.listelivres[i].tabnote[nbnote];
 			nbnote++;
 			cout << endl << "Merci pour votre avis !" << endl;
-			
-			for (int y = 0; y < nbnote;y++) {
+
+			for (int y = 0; y < nbnote; y++) {
 				somme = somme + mabib.listelivres[i].tabnote[y];
 			}
 			mabib.listelivres[i].note = float(somme) / float(nbnote);
-			
+
 		}
 	}
 	if (doexist == "non") {
@@ -420,8 +493,10 @@ void notelivre(t_biblio& mabib, int& nbnote) {
 			}
 		}
 	}
-	
+
 }*/
+
+
 
 void locate(int x, int y)
 {
